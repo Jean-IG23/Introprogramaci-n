@@ -1,6 +1,6 @@
 package Repetición_while;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 /**
  * GENERAR LA TABLA DE MULTIPLICAR HASTA EL 10 DE UN NÚMERO INGRESADA POR TECLADO
