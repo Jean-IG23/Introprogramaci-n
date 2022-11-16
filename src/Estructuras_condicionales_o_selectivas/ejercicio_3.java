@@ -11,7 +11,7 @@ public class ejercicio_3 {
         int valor2 = teclado.nextInt();
         if (valor1%valor2==0) {
             System.out.println("El primer numero es divisible para el segundo numero");
-        }else{
+        } else {
             System.out.println("El segundo numero es divisible para el primer numero");
         }
 
