@@ -8,8 +8,9 @@ public class Suma_Numeros_Impares {
         System.out.println("Ingrese un npumero límite");
         int limite = teclado.nextInt();
         int sumaimpares = 0;
-        for(int contador = 1; contador <= limite; contador = contador +2) {
-                sumaimpares = sumaimpares + contador;
+        for(int contador = 1; contador <= limite; contador ++) {
+
+            sumaimpares = sumaimpares + contador;
         }
         System.out.println("La suma de numeros impares es igual a " + sumaimpares);
     }
