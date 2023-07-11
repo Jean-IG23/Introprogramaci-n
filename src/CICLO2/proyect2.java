@@ -24,3 +24,18 @@ public class proyect2 {
     }
 }
 
+
+    void insertar() {
+        System.out.print("Ingrese el número que desea insertar: ");
+        int v = entrada.nextInt();
+        Nodo aux = raiz;
+        if (aux == null) {
+            aux = new Nodo(v);
+        }
+        if (v >= aux.dato) {
+            aux.der = procesoRecursivo(aux.der, v);
+            if (v < aux.dato) {
+                aux.izq = procesoRecursivo(aux.izq, v);
+            }
+        }
+    }
