@@ -11,6 +11,7 @@ public class POO_DATA_BASE {
 }
 
 
+
 package MODEL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,10 +44,25 @@ public class ConexionDB_Est {
                 resultSet.getInt("nota2"),
                 resultSet.getInt("promedio"),
                 resultSet.getString("estado")));
+            statement.close();
         }catch(SQLException sqlException){
             this.msj = sqlException.getMessage();
         }
         return lstEstudiantes;
     }
+    
+    public String InsertarEstudiante(Estudiante est) {
+        try{
+            setConcDB("jdbc:sqlite:src/MODEL/DB_Est.db");
+            Statement statement = concDB.createStatement();
+            String strInsertEst = String.format("insert into Estudiante(nombreEst, nota1, nota2, promedio, estado) " +  "values(%s, %d, %d, %d, %s)", est.nombre, est.nota1, est.nota2, est.promedio, est.stado);
+            statement.executeUpdate(strInsertEst);
+            statement.close();
+        }catch (SQLException sqlException) {
+            this.msj = sqlException.getMessage();
+        }
+        return msj;
+    }
 }
+
 
