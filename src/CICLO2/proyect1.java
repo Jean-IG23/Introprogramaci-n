@@ -1442,3 +1442,217 @@ class Reserva {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public abstract class InformacionPuestos {
+    public String nombreExpositor;
+    public String Ubicacion;
+    public String breve_Descripcion;
+    public String tipoPago;
+    public int ventas;
+    public ArrayList<Cliente> listclientes;
+    public double costoReserva;
+
+    public InformacionPuestos(String nombreExpositor, String ubicacion, String breve_Descripcion, String tipoPago, int ventas, ArrayList<Cliente> listclientes, double costoReserva) {
+        this.nombreExpositor = nombreExpositor;
+        Ubicacion = ubicacion;
+        this.breve_Descripcion = breve_Descripcion;
+        this.tipoPago = tipoPago;
+        this.ventas = ventas;
+        this.listclientes = listclientes;
+        this.costoReserva = costoReserva;
+    }
+
+    public abstract void calcularPago();
+
+    @Override
+    public String toString() {
+        return "InformacionPuestos{" +
+                "nombreExpositor='" + nombreExpositor + '\'' +
+                ", Ubicacion='" + Ubicacion + '\'' +
+                ", breve_Descripcion='" + breve_Descripcion + '\'' +
+                ", tipoPago='" + tipoPago + '\'' +
+                ", ventas=" + ventas +
+                ", costoReserva=" + costoReserva +
+                '}';
+    }
+}
+
+class Alimentos_y_Bebidas extends InformacionPuestos{
+    public String menu;
+
+    public Alimentos_y_Bebidas(String nombreExpositor, String ubicacion, String breve_Descripcion, String tipoPago, int ventas, ArrayList<Cliente> listclientes, double costoReserva, String menu) {
+        super(nombreExpositor, ubicacion, breve_Descripcion, tipoPago, ventas, listclientes, costoReserva);
+        this.menu = menu;
+    }
+
+    public void calcularPago() {
+        for (Cliente cliente :  listclientes) {
+            if (cliente.equals(cliente.getNombre()));
+            this.ventas = this.ventas + cliente.compras;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Alimentos_y_Bebidas{" +
+                "menu='" + menu + '\'' +
+                '}' + super.toString();
+    }
+}
+
+class Artesanias_y_Ropa extends InformacionPuestos{
+    public String materialUtilizado;
+    public String tecnicasElaboracion;
+
+    public Artesanias_y_Ropa(String nombreExpositor, String ubicacion, String breve_Descripcion, String tipoPago, int ventas, ArrayList<Cliente> listclientes, double costoReserva, String materialUtilizado, String tecnicasElaboracion) {
+        super(nombreExpositor, ubicacion, breve_Descripcion, tipoPago, ventas, listclientes, costoReserva);
+        this.materialUtilizado = materialUtilizado;
+        this.tecnicasElaboracion = tecnicasElaboracion;
+    }
+
+    public void calcularPago() {
+        for (Cliente cliente :  listclientes) {
+            if (cliente.equals(cliente.getNombre()));
+            this.ventas = this.ventas + cliente.compras;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Artesanias_y_Ropa{" +
+                "materialUtilizado='" + materialUtilizado + '\'' +
+                ", tecnicasElaboracion='" + tecnicasElaboracion + '\'' +
+                '}' + super.toString();
+    }
+}
+
+class Tecnologia extends InformacionPuestos{
+    public String productos;
+
+    public Tecnologia(String nombreExpositor, String ubicacion, String breve_Descripcion, String tipoPago, int ventas, ArrayList<Cliente> listclientes, double costoReserva, String productos) {
+        super(nombreExpositor, ubicacion, breve_Descripcion, tipoPago, ventas, listclientes, costoReserva);
+        this.productos = productos;
+    }
+
+    public void calcularPago() {
+        for (Cliente cliente :  listclientes) {
+            if (cliente.equals(cliente.getNombre()));
+            this.ventas = this.ventas + cliente.compras;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Tecnologia{" +
+                "productos='" + productos + '\'' +
+                '}' + super.toString();
+    }
+}
+
+class Varios extends InformacionPuestos{
+    public String promociones;
+
+    public Varios(String nombreExpositor, String ubicacion, String breve_Descripcion, String tipoPago, int ventas, ArrayList<Cliente> listclientes, double costoReserva, String promociones) {
+        super(nombreExpositor, ubicacion, breve_Descripcion, tipoPago, ventas, listclientes, costoReserva);
+        this.promociones = promociones;
+    }
+
+    public void calcularPago() {
+        for (Cliente cliente :  listclientes) {
+            if (cliente.equals(cliente.getNombre()));
+            this.ventas = this.ventas + cliente.compras;
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "Varios{" +
+                "promociones='" + promociones + '\'' +
+                '}' + super.toString();
+    }
+}
+
+class Cliente {
+    public String nombre;
+    public int compras;
+
+    public Cliente(String nombre, int compras) {
+        this.nombre = nombre;
+        this.compras = compras;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "nombre='" + nombre + '\'' +
+                ", compras=" + compras +
+                '}' + super.toString();
+    }
+}
+
+class Ejecutor {
+    public static void main(String[] args) {
+        ArrayList<Cliente> cliente = new ArrayList<>(Arrays.asList(new Cliente("Jeab",20),
+                new Cliente("Jean",30),
+                new Cliente("Yeily", 10),
+                new Cliente("Yeily", 15)));
+
+        InformacionPuestos informacionPuestos1 = new Alimentos_y_Bebidas("Jean","fERIA","Venta de Almuerzos","Efectivo",150,cliente ,200,"Arroz");
+        InformacionPuestos informacionPuestos2 = new Artesanias_y_Ropa("Ivan","Sauces","Venta de Zapatos","Tarjeta",300,cliente,200,"Cuero","Cruz");
+        InformacionPuestos informacionPuestos3 = new Tecnologia("Pablo", "Mater Dei","Venta de celulares","Efectivo",100,cliente,150,"Celulares,Laptops,Tablet,etc");
+        InformacionPuestos informacionPuestos4 = new Varios("Paul", "Daniel Alvarez","Venta de juguetes","Efectivo",350,cliente,150,"2x1 en cualquier compra");
+
+        informacionPuestos1.calcularPago();
+        informacionPuestos2.calcularPago();
+        informacionPuestos3.calcularPago();
+        informacionPuestos4.calcularPago();
+
+        System.out.println(informacionPuestos1);
+        System.out.println(informacionPuestos2);
+        System.out.println(informacionPuestos3);
+        System.out.println(informacionPuestos4);
+
+        System.out.println(cliente);
+    }
+}
+
+
