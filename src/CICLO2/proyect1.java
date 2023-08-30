@@ -450,3 +450,476 @@ public class Ejercicio7 {
         ));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package mainejmod;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Formatter;
+class Usuario {
+    public String nombre, diaEstacionamiento, estado;
+    public double costoHora, costoFinal;
+    public int numHoras;
+    public Vehiculo vehiculo;
+    public Usuario(String nombre, String diaEstacionamiento, double costoHora, int numHoras, Vehiculo vehiculo) {
+        this.nombre = nombre;
+        this.costoHora = costoHora;
+        this.numHoras = numHoras;
+        this.vehiculo = vehiculo;
+        this.diaEstacionamiento = diaEstacionamiento;
+    }
+    public void calcularCostoFinal() {
+        this.costoFinal = this.costoHora * this.numHoras;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public String getDiaEstacionamiento() {
+        return diaEstacionamiento;
+    }
+    public String getEstado() {
+        return estado;
+    }
+    public double getCostoHora() {
+     return costoHora;
+    }
+    public double getCostoFinal() {
+        return costoFinal;
+    }
+    public int getNumHoras() {
+        return numHoras;
+    }
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+    public String toString() {
+        return "Usuario{" + "nombre=" + nombre + ", diaEstacionamiento=" + diaEstacionamiento + ", estado=" + estado + 
+                ", costoHora=" + costoHora + ", costoFinal=" + costoFinal + ", numHoras=" + numHoras + 
+                ", vehiculo=" + vehiculo + '}';
+    }
+}
+class Estudiante extends Usuario {
+    public String discapacidad;
+    public double descuento;
+    public Estudiante(String discapacidad, String diaEstacionamiento, String nombre, double costoHora, int numHoras, Vehiculo vehiculo) {
+        super(nombre, diaEstacionamiento, costoHora, numHoras, vehiculo);
+        this.discapacidad = discapacidad;
+    }
+    public void calcularCostoFinal() {
+        super.calcularCostoFinal();
+        if ((discapacidad.equals("SI")) || this.vehiculo instanceof Moto) {
+            this.descuento = this.costoFinal * 0.5;
+            this.costoFinal -= this.descuento;
+        }
+    }
+    public String getDiscapacidad() {
+        return discapacidad;
+    }
+    public double getDescuento() {
+        return descuento;
+    }
+    public String toString() {
+        return super.toString() + " Estudiante{" + "discapacidad=" + discapacidad + ", descuento=" + descuento + '}';
+    }
+}
+class PersonalUTPL extends Usuario {
+    public String discapacidad;
+    public double descuento;
+    public PersonalUTPL(String discapacidad, String diaEstacionamiento, String nombre, double costoHora, int numHoras, Vehiculo vehiculo) {
+        super(nombre, diaEstacionamiento, costoHora, numHoras, vehiculo);
+        this.diaEstacionamiento = diaEstacionamiento;
+        this.discapacidad = discapacidad;
+    }
+    public void calcularCostoFinal() {
+        super.calcularCostoFinal();
+        if ((discapacidad.equals("SI")) || this.vehiculo instanceof Moto) {
+            this.descuento = this.costoFinal * 0.5;
+            this.costoFinal -= this.descuento;
+        }
+    }
+    public String getDiscapacidad() {
+        return discapacidad;
+    }
+    public double getDescuento() {
+        return descuento;
+    }
+    public String toString() {
+       return super.toString() + " PersonalUTPL{" + "discapacidad=" + discapacidad + ", descuento=" + descuento + '}';
+    }
+}
+class UsuarioParticular extends Usuario {
+    public UsuarioParticular(String nombre, String diaEstacionamiento, double costoHora, int numHoras, Vehiculo vehiculo) {
+        super(nombre, diaEstacionamiento, costoHora, numHoras, vehiculo);
+    }
+    public String toString() {
+        return super.toString();
+    }
+}
+class Vehiculo {
+    public String matricula;
+    public ArrayList<String> diasEstacionamiento;
+    public Vehiculo(String matricula) {
+        this.matricula = matricula;
+    }
+    public void verificarDiasEstacionamiento() {
+        this.diasEstacionamiento = (Integer.parseInt(this.matricula.substring(matricula.length() - 1, matricula.length())) % 2 == 0)
+                ? new ArrayList<>(Arrays.asList("Lunes", "Martes", "Miercoles"))
+                : new ArrayList<>(Arrays.asList("Jueves", "Viernes", "Sabado"));
+    }
+    public String getMatricula() {
+        return matricula;
+    }
+    public ArrayList<String> getDiasEstacionamiento() {
+        return diasEstacionamiento;
+    }
+    public String toString() {
+       return "Vehiculo{" + "matricula=" + matricula + ", diasEstacionamiento=" + diasEstacionamiento + '}';
+    }
+}
+class Moto extends Vehiculo {
+    public Moto(String matricula) {
+        super(matricula);
+    }
+}
+class Auto extends Vehiculo {
+    public Auto(String matricula) {
+        super(matricula);
+    }
+}
+class Estacionamiento {
+    public ArrayList<Usuario> listUsuario;
+    public Estacionamiento(ArrayList<Usuario> listUsuario) {
+        this.listUsuario = listUsuario;
+    }
+    public void validarIngresoMatricula() {
+        for (Usuario auxUsuario : listUsuario) {
+            auxUsuario.vehiculo.verificarDiasEstacionamiento();
+            auxUsuario.estado = "AUTORIZADO";
+            if ((auxUsuario instanceof Estudiante) || (auxUsuario instanceof UsuarioParticular)) {
+                if (!auxUsuario.vehiculo.diasEstacionamiento.contains(auxUsuario.diaEstacionamiento)) {
+                    auxUsuario.estado = "NO AUTORIZADO";
+                } else {
+                    auxUsuario.calcularCostoFinal();
+                }
+            } else {
+                auxUsuario.calcularCostoFinal();
+            }
+        }
+    }
+}
+public class MainEJMod {
+    public static void main(String[] args) {
+        ArrayList<Usuario> listUsuario = new ArrayList<>(Arrays.asList(
+                new Estudiante("SI", "Jueves", "User1", 2, 6, new Vehiculo("ABC-6")),
+                new PersonalUTPL("SI", "Lunes", "User2", 5, 7, new Vehiculo("XYZ-3")),
+                new UsuarioParticular("User3", "Martes", 2, 8, new Vehiculo("OPQ-7"))));
+        Estacionamiento estacionamiento = new Estacionamiento(listUsuario);
+        estacionamiento.validarIngresoMatricula();
+        try {
+            Formatter fileOut = new Formatter("archivoSaluda.csv");
+            fileOut.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n", "NOMBRE USUARIO", "TIPOS USER", "MATRICULA DE VEHICULO", "DIA", 
+                           "DIAS PERMITIDOS POR MATRICULA", "ESTADO", "COSTO HORA", "NUMERO HORAS", "DISCAPACIDAD", "DESCUENTO",
+                           "COSTO FINAL");
+            for (Usuario auxUser : listUsuario) {
+                fileOut.format("%s;%s;%s;%s;%s;%s;%.2f;%d;", auxUser.getNombre(),  auxUser.getClass().getName(), 
+                               auxUser.vehiculo.getMatricula(), auxUser.diaEstacionamiento, 
+                               auxUser.vehiculo.getDiasEstacionamiento().toString(), auxUser.estado, auxUser.getCostoHora(),
+                               auxUser.getNumHoras());
+                if (auxUser instanceof Estudiante) 
+                        fileOut.format("%s;%.2f", ((Estudiante) auxUser).getDiscapacidad(),  ((Estudiante) auxUser).getDescuento());
+                else if (auxUser instanceof PersonalUTPL) 
+                        fileOut.format("%s;%.2f", ((PersonalUTPL) auxUser).getDiscapacidad(),  ((PersonalUTPL) auxUser).getDescuento());
+                     else
+                fileOut.format("%s;%.2f", "", 0.0);
+                fileOut.format(";%.2f", auxUser.costoFinal);
+                fileOut.format("\n");
+            }
+            fileOut.close();
+           System.out.println("Archivo creado con exito");
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error en el archivo");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package javaapplication176;
+
+import java.util.Formatter;
+import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
+
+class Empleado4 {
+    private String nombre;
+    private String apellidos;
+    private String cedula;
+    private String direccion;
+    private int antiguedad;
+    private String telefono;
+    private double salario;
+
+    public Empleado4 (String nombre, String apellidos, String cedula, String direccion, int antiguedad, String telefono, double salario) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.cedula = cedula;
+        this.direccion = direccion;
+        this.antiguedad = antiguedad;
+        this.telefono = telefono;
+        this.salario = salario;
+    }
+
+    public String getNombre() {
+        return nombre;
+           }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+ public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public int getAntiguedad() {
+        return antiguedad;
+    }
+public void setAntiguedad(int antiguedad) {
+        this.antiguedad = antiguedad;
+    }
+
+    public String getTelefono() {
+        return telefono;
+  }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public double calcularSalario() {
+        return salario;
+    }
+}
+class Secretario extends Empleado4 {
+    private String despacho;
+    private double costoHora;
+    private int horasTrabajadas;
+    private int horasExtras;
+
+    public Secretario(String nombre, String apellidos, String cedula, String direccion, int antiguedad, String telefono, double salario, String despacho, double costoHora, int horasTrabajadas, int horasExtras) {
+        super(nombre, apellidos, cedula, direccion, antiguedad, telefono, salario);
+        this.despacho = despacho;
+        this.costoHora = costoHora;
+        this.horasTrabajadas = horasTrabajadas;
+        this.horasExtras = horasExtras;
+    }
+
+  @Override
+    public double calcularSalario() {
+        double salarioBase = super.calcularSalario();
+        double salarioHoras = costoHora * horasTrabajadas;
+        double salarioExtras = costoHora * horasExtras * 1.5;
+        return salarioBase + salarioHoras + salarioExtras;
+    }
+}
+
+class Vendedor4 extends Empleado4 {
+    private String cocheMatricula;
+    private String cocheMarca;
+    private String cocheModelo;
+    private String telefonoMovil;
+    private String areaVenta;
+    public double ventasMensuales = 500000000;
+    private double comision;
+
+    public Vendedor4 (String nombre, String apellidos, String cedula, String direccion, int antiguedad, String telefono, double salario, String cocheMatricula, String cocheMarca, String cocheModelo, String telefonoMovil, String areaVenta, double comision) {
+        super(nombre, apellidos, cedula, direccion, antiguedad, telefono, salario);
+        this.cocheMatricula = cocheMatricula;
+        this.cocheMarca = cocheMarca;
+        this.cocheModelo = cocheModelo;
+        this.telefonoMovil = telefonoMovil;
+        this.areaVenta = areaVenta;
+        this.comision = comision;
+    }
+   @Override
+    public double calcularSalario() {
+        double salarioBase = super.calcularSalario();
+        return salarioBase + (comision * ventasMensuales); // Debes definir 'ventasMensuales'
+    }
+}
+class JefeZona1 extends Empleado4 {
+    private String despacho;
+    private Secretario secretario;
+    private ArrayList<Vendedor4> vendedores1;
+
+    public JefeZona1(String nombre, String apellidos, String cedula, String direccion, int antiguedad, String telefono, double salario, String despacho, Secretario secretario, ArrayList<Vendedor4> vendedores1) {
+        super(nombre, apellidos, cedula, direccion, antiguedad, telefono, salario);
+        this.despacho = despacho;
+        this.secretario = secretario;
+        this.vendedores1 = vendedores1;
+    }
+    @Override
+    public double calcularSalario() {
+        double ventasTotales = 0;
+        for (Vendedor4 vendedor : vendedores1) {
+            ventasTotales += vendedor.ventasMensuales; // Debes definir 'ventasMensuales'
+        }
+        double salarioBase = super.calcularSalario();
+        return salarioBase + (ventasTotales * 0.1);
+    }
+}
+public class MainEJ7 {
+    public static void main(String[] args) {
+        Secretario secretario = new Secretario("Ana", "López", "123456789", "Calle A, Ciudad", 2, "1234567890", 1000.0, "Oficina 101", 10.0, 160, 10);
+
+        Vendedor4 vendedor5 = new Vendedor4("Juan", "García", "987654321", "Avenida B, Pueblo", 3, "9876543210", 1500.0, "ABC123", "Toyota", "Corolla", "555-12345", "Zona Norte", 0.05);
+
+        Secretario secretarioJefe = new Secretario("Laura", "Pérez", "543216789", "Calle C, Ciudad", 5, "5432167890", 1200.0, "Oficina 202", 12.0, 180, 15);
+
+        ArrayList<Vendedor4> vendedoresJefe = new ArrayList<>();
+        vendedoresJefe.add(vendedor5);
+
+        JefeZona1 jefeZona1 = new JefeZona1("Carlos", "Martínez", "789654321", "Avenida D, Pueblo", 7, "7896543210", 2500.0, "Oficina 303", secretarioJefe, vendedoresJefe);
+
+        double salarioSecretario = secretario.calcularSalario();
+        double salarioVendedor = vendedor5.calcularSalario();
+        double salarioJefeZona = jefeZona1.calcularSalario();
+
+        System.out.println("Salario del Secretario: $" + salarioSecretario);
+        System.out.println("Salario del Vendedor: $" + salarioVendedor);
+        System.out.println("Salario del Jefe de Zona: $" + salarioJefeZona);
+        //generacion de doc .CSV
+        try (FileWriter writer = new FileWriter("empleados.csv")) {
+            writer.write("Tipo;Nombre;Apellidos;Cedula;Direccion;Antiguedad;Telefono;Salario\n");
+
+  writeEmpleado(writer, "Secretario", secretario, salarioSecretario); 
+            writeEmpleado(writer, "Vendedor", vendedor5, salarioVendedor);
+            writeEmpleado(writer, "Jefe de Zona", jefeZona1, salarioJefeZona);
+       } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeEmpleado(FileWriter writer, String tipo, Empleado4 empleado, double salario) throws IOException {
+        writer.write(String.format("%s;%s;%s;%s;%s;%d;%s;%.2f\n",
+                tipo,
+                empleado.getNombre(),
+                empleado.getApellidos(),
+                empleado.getCedula(),
+                empleado.getDireccion(),
+                empleado.getAntiguedad(),
+                empleado.getTelefono(),
+                salario
+        ));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
