@@ -1018,3 +1018,253 @@ public class MainEJ1 {
         carrito.realizarPago(30.0, descuento);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package Ensayo;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Examen_Parcial_2 {
+    public static void main(String[] args) {
+        List<Empleado3> listEmpleados3 = new ArrayList<>();
+        Map<String, List<Vendedor3>> salespeopleByZone = new HashMap<>();
+
+        Vendedor3 vendedor1 = new Vendedor3("Juan", "SAL", 420, "HHH", "hg", 3333, "123a", "totota", "2012", "sur", 20.12, 400);
+        addSalespersonToZone(salespeopleByZone, vendedor1);
+
+
+        Sistema3 sistema = new Sistema3(listEmpleados3, salespeopleByZone);
+        sistema.validarSueldo3();
+
+        // Imprimir los empleados y vendedores con sus salarios
+        for (Empleado3 empleado : listEmpleados3) {
+            System.out.println(empleado);
+        }
+
+        // Imprimir los vendedores organizados por zona
+        for (String zone : salespeopleByZone.keySet()) {
+            System.out.println("Zona: " + zone);
+            List<Vendedor3> vendedores = salespeopleByZone.get(zone);
+            for (Vendedor3 vendedor : vendedores) {
+                System.out.println(vendedor);
+            }
+        }
+    }
+
+    public static void addSalespersonToZone(Map<String, List<Vendedor3>> salespeopleByZone, Vendedor3 vendedor) {
+        List<Vendedor3> vendedoresEnZona = salespeopleByZone.getOrDefault(vendedor.area, new ArrayList<>());
+        vendedoresEnZona.add(vendedor);
+        salespeopleByZone.put(vendedor.area, vendedoresEnZona);
+    }
+}
+
+// Las clases Empleado3, Vendedor3, Secretaria2, jefeZona y Sistema3 se mantienen como las proporcionaste en tu código original.
+
+
+
+abstract class Empleado3{
+    public String nombre;
+    public String apellido;
+    public int cedula;
+    public String direccion;
+    public String antiguedad;
+    public int telefono;
+    public double sueldo;
+
+
+    public Empleado3(String nombre, String apellido, int cedula, String direccion, String antiguedad, int telefono) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.cedula = cedula;
+        this.direccion = direccion;
+        this.antiguedad = antiguedad;
+        this.telefono = telefono;
+
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+    public String getApellido() {
+        return apellido;
+    }
+    public int getCedula() {
+        return cedula;
+    }
+    public String getDireccion() {
+        return direccion;
+    }
+    public String getAntiguedad() {
+        return antiguedad;
+    }
+    public int getTelefono() {
+        return telefono;
+    }
+    public abstract void calcularSueldo3( );
+}
+class Vendedor3 extends Empleado3 {
+    public String idMatricula;
+    public String marca;
+    public String modelo;
+    public String area;
+    public double comision;
+    public  double sueldob;
+    public Vendedor3(String nombre, String apellido, int cedula, String direccion, String antiguedad, int telefono, String idMatricula, String marca, String modelo, String area, double comision, double sueldob) {
+        super(nombre, apellido, cedula, direccion, antiguedad, telefono);
+        this.idMatricula = idMatricula;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.area = area;
+        this.comision = comision;
+        this.sueldob = sueldob;
+    }
+    @Override
+    public void calcularSueldo3() {
+        this.sueldob = this.sueldob + (comision * 10);
+    }
+    @Override
+    public String toString() {
+        return "Vendedor3{" +
+                "idMatricula='" + idMatricula + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", area='" + area + '\'' +
+                ", comision=" + comision +
+                ", sueldob=" + sueldob +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", cedula=" + cedula +
+                ", direccion='" + direccion + '\'' +
+                ", antiguedad='" + antiguedad + '\'' +
+                ", telefono=" + telefono +
+                ", sueldo=" + sueldo +
+                '}';
+    }
+}
+class Secretaria2 extends Empleado3{
+    public double horastrabajadas = 8;
+    public double horasextra = 2;
+    public double costoHoras = 30;
+
+    public Secretaria2(String nombre, String apellido, int cedula, String direccion, String antiguedad, int telefono, double horastrabajadas, double horasextra, double costoHoras) {
+        super(nombre, apellido, cedula, direccion, antiguedad, telefono);
+        this.horastrabajadas = horastrabajadas;
+        this.horasextra = horasextra;
+        this.costoHoras = costoHoras;
+    }
+    @Override
+    public void calcularSueldo3() {
+        this.sueldo = (this.horastrabajadas * this.costoHoras)+(this.horasextra * this.costoHoras)+
+                (this.costoHoras*0.5);
+    }
+    @Override
+    public String toString() {
+        return "Secretaria2{" +
+                "horastrabajadas=" + horastrabajadas +
+                ", horasextra=" + horasextra +
+                ", costoHoras=" + costoHoras +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", cedula=" + cedula +
+                ", direccion='" + direccion + '\'' +
+                ", antiguedad='" + antiguedad + '\'' +
+                ", telefono=" + telefono +
+                ", sueldo=" + sueldo +
+                '}';
+    }
+}
+// ... (código anterior)
+
+class jefeZona extends Empleado3 {
+    public Sistema3 sistema3;
+    public String despacho;
+    public Secretaria2 secretaria1;
+    public Vendedor3 vendedor3;
+
+    public jefeZona(String nombre, String apellido, int cedula, String direccion, String antiguedad, int telefono, String despacho, Secretaria2 secretaria1, Vendedor3 vendedor3) {
+        super(nombre, apellido, cedula, direccion, antiguedad, telefono);
+        this.despacho = despacho;
+        this.secretaria1 = secretaria1;
+        this.vendedor3 = vendedor3;
+    }
+
+    @Override
+    public void calcularSueldo3() {
+        double vendedoresEnZona = sistema3.encontrarvendedores(vendedor3);
+        this.sueldo = vendedoresEnZona * 10;
+    }
+
+    @Override
+    public String toString() {
+        return "jefeZona{" +
+                "despacho='" + despacho + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", cedula=" + cedula +
+                ", direccion='" + direccion + '\'' +
+                ", antiguedad='" + antiguedad + '\'' +
+                ", telefono=" + telefono +
+                ", sueldo=" + sueldo +
+                '}';
+    }
+}
+
+class Sistema3 {
+    public List<Empleado3> listEmpleados3;
+    public Map<String, List<Vendedor3>> salespeopleByZone;
+
+    public Sistema3(List<Empleado3> listEmpleados3, Map<String, List<Vendedor3>> salespeopleByZone) {
+        this.listEmpleados3 = listEmpleados3;
+        this.salespeopleByZone = salespeopleByZone;
+    }
+
+    public double encontrarvendedores(Vendedor3 vendedor) {
+        listEmpleados3.add(vendedor);
+        int numeroVendedores = 0;
+        for (Empleado3 empleado : listEmpleados3) {
+            if (empleado instanceof Vendedor3) {
+                numeroVendedores++;
+            }
+        }
+        return numeroVendedores;
+    }
+
+    public void validarSueldo3 () {
+        for (Empleado3 empleado : listEmpleados3) {
+            empleado.calcularSueldo3();
+        }
+    }
+}
+
+
+
+
+
