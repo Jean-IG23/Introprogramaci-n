@@ -1268,3 +1268,177 @@ class Sistema3 {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package Ensayo;
+
+import java.util.ArrayList;
+public class Sistema_Vuelos {
+    public static void main(String[] args) {
+        Pasajero pasajero1 = new Pasajero("pablo", "f555",9630071);
+        Pasajero pasajero2 = new Pasajero("carlis", "j999",01234);
+        Pasajero pasajero3 = new Pasajero("juan", "564",01234);
+        Pasajero pasajero4 = new Pasajero("ben", "954",01234);
+        Vuelo chicago = new Vuelo(502, "Ecuador","chicago","11/05/23","10:20:30", 1 );
+        Reserva reserva1 = new Reserva(pasajero1, chicago);
+        Reserva reserva2 = new Reserva(pasajero2, chicago);
+        Reserva reserva3 = new Reserva(pasajero3, chicago);
+        Reserva reserva4 = new Reserva(pasajero4, chicago);
+
+        ArrayList<Reserva> reservas = new ArrayList<>();
+        reservas.add(reserva1);
+        reservas.add(reserva2);
+        reservas.add(reserva3);
+        reservas.add(reserva4);
+        for (Reserva reserva : reservas) {
+            System.out.println("Pasajeros en el vuelo:");
+            System.out.println(reserva.vuelo.listpasajeros);
+        }
+
+    }
+}
+class User{
+    public String nom;
+    public String numPasa;
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getNumPasa() {
+        return numPasa;
+    }
+
+    public void setNumPasa(String numPasa) {
+        this.numPasa = numPasa;
+    }
+
+    public User(String nom, String numPasa) {
+        this.nom = nom;
+        this.numPasa = numPasa;
+    }
+}
+class Personl extends User {
+    public String numIndetificacion;
+
+    public Personl(String nom, String numPasa, String numIndetificacion) {
+        super(nom, numPasa);
+        this.numIndetificacion = numIndetificacion;
+    }
+}
+class Pasajero extends User {
+    public int numCel;
+
+    public int getNumCel() {
+        return numCel;
+    }
+
+    public void setNumCel(int numCel) {
+        this.numCel = numCel;
+    }
+
+    public Pasajero (String nom, String numPasa, int numCel) {
+        super(nom, numPasa);
+        this.numCel = numCel;
+    }
+
+    @Override
+    public String toString() {
+        return "Pasajero{" +
+                "numCel=" + numCel +
+                ", nom='" + nom + '\'' +
+                ", numPasa='" + numPasa + '\'' +
+                '}';
+    }
+}
+class Vuelo {
+    public int numvuel;
+    public String origen;
+    public String destini;
+    public String fecha;
+    public String Hora;
+    public int limitePa ;
+    public String estado;
+    final ArrayList<Pasajero> listpasajeros;
+
+    public Vuelo(int numvuel, String origen, String destini, String fecha, String Hora, int limitePa) {
+        this.numvuel = numvuel;
+        this.origen = origen;
+        this.destini = destini;
+        this.fecha = fecha;
+        this.limitePa = limitePa;
+        this.Hora = Hora;
+        this.estado = "EN ESPERA";
+        this.listpasajeros = new ArrayList<>();
+    }
+    public void agregarPasajero(Pasajero pasajero) {
+        if (listpasajeros.size() <= limitePa) {
+            listpasajeros.add(pasajero);
+            this.estado = "TIENE ACCESO";
+        } else {
+            this.estado = "NO TIENE ACCESO";
+        }
+    }
+    @Override
+    public String toString() {
+        return "Vuelo{" +
+                "numvuel=" + numvuel +
+                ", origen='" + origen + '\'' +
+                ", destini='" + destini + '\'' +
+                ", fecha='" + fecha + '\'' +
+                ", limitePa=" + limitePa +
+                ", estado='" + estado + '\'' +
+                '}';
+    }
+}
+class Reserva {
+    public Pasajero pasajeros;
+    public Vuelo vuelo;
+
+    public Reserva(Pasajero pasajeros, Vuelo vuelo) {
+        this.pasajeros = pasajeros;
+        this.vuelo = vuelo;
+        asignarReserva();
+    }
+
+    public void asignarReserva() {
+        vuelo.agregarPasajero(pasajeros);
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{" +
+                "pasajeros=" + pasajeros +
+                ", vuelo=" + vuelo +
+                '}';
+    }
+}
+
+
+
+
