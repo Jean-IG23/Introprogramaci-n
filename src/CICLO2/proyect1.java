@@ -923,3 +923,98 @@ public class MainEJ7 {
 
 
 
+package mainej1;
+
+class Producto {
+    private String nombre;
+    private double precio;
+    private int cantidad;
+
+    public Producto(String nombre, double precio, int cantidad) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.cantidad = cantidad;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void restarCantidad(int cantidad) {
+        this.cantidad -= cantidad;
+    }
+}
+
+class CarritoDeCompras {
+    private Producto producto;
+    private double total;
+
+   public void agregarProducto(String nombre, int cantidad, Producto[] productosDisponibles) {
+        for (Producto p : productosDisponibles) {
+            if (p.getNombre().equals(nombre)) {
+                if (p.getCantidad() >= cantidad) {
+                    producto = new Producto(p.getNombre(), p.getPrecio(), cantidad);
+                    total = p.getPrecio() * cantidad;
+                    p.restarCantidad(cantidad);
+                    return;
+                } else {
+                    System.out.println("No hay suficiente cantidad disponible de " + nombre);
+                    return;
+                }
+            }
+        }
+        System.out.println("El producto " + nombre + " no existe en la tienda.");
+    }
+
+    public double calcularTotal() {
+        return total;
+    }
+
+    public void mostrarDetalleCompra() {
+        System.out.println("Detalle de la compra:");
+        System.out.println(producto.getNombre() + " - Cantidad: " + producto.getCantidad());
+    }
+    
+     public void realizarPago(double montoPagado, double descuento) {
+        if (montoPagado >= total) {
+            double totalConDescuento = total;
+            if (montoPagado > 1000) {
+     totalConDescuento -= descuento;
+            }
+            
+            System.out.println("Gracias por su compra. Su cambio es: " + (montoPagado - totalConDescuento));
+            
+            // Actualizar la cantidad disponible en los productos del carrito
+            producto.restarCantidad(producto.getCantidad());
+        } else {
+            System.out.println("El monto pagado no es suficiente. Faltan $" + (total - montoPagado));
+        }
+    }
+}
+
+public class MainEJ1 {
+    public static void main(String[] args) {
+        Producto[] productosDisponibles = {
+            new Producto("Producto1", 10.0, 5),
+            new Producto("Producto2", 20.0, 10)
+            // Agregar más productos aquí
+        };
+
+        CarritoDeCompras carrito = new CarritoDeCompras();
+        double descuento = 5.0; // Descuento de ejemplo
+
+        carrito.agregarProducto("Producto1", 3, productosDisponibles);
+        carrito.mostrarDetalleCompra();
+        System.out.println("Total: $" + carrito.calcularTotal());
+
+        carrito.realizarPago(30.0, descuento);
+    }
+}
